@@ -10,6 +10,7 @@ concurrency: ${{ github.workflow }}-${{ github.ref }}
 jobs:
   release:
     name: Version
+    if: github.repository == 'mattpocock/skills'
     runs-on: ubuntu-latest
     permissions:
       contents: write
