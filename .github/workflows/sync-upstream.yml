@@ -1,0 +1,85 @@
+name: Sync Matt Pocock upstream
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "17 7 * * 1"
+
+permissions:
+  contents: write
+  pull-requests: write
+  issues: write
+
+concurrency:
+  group: sync-matt-pocock-upstream
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ github.token }}
+      SYNC_BRANCH: automation/sync-mattpocock-upstream
+    steps:
+      - name: Check out the personalized fork
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          fetch-depth: 0
+
+      - name: Merge upstream into a review branch
+        id: merge
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git remote add upstream https://github.com/mattpocock/skills.git
+          git fetch upstream main
+
+          if git merge-base --is-ancestor upstream/main origin/main; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          git checkout -B "$SYNC_BRANCH" origin/main
+          if ! git merge --no-edit upstream/main; then
+            git merge --abort
+            echo "conflicted=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          git diff --check origin/main...HEAD
+          npx --yes skills@latest add . --list >/dev/null
+          git push --force-with-lease origin "$SYNC_BRANCH"
+          echo "changed=true" >> "$GITHUB_OUTPUT"
+
+      - name: Open or refresh the sync pull request
+        if: steps.merge.outputs.changed == 'true'
+        shell: bash
+        run: |
+          set -euo pipefail
+          if gh pr view "$SYNC_BRANCH" >/dev/null 2>&1; then
+            gh pr comment "$SYNC_BRANCH" --body "Refreshed with the latest changes from mattpocock/skills."
+          else
+            gh pr create \
+              --base main \
+              --head "$SYNC_BRANCH" \
+              --title "Sync latest changes from mattpocock/skills" \
+              --body "Automated upstream sync. Review the skill changes and validation result before merging."
+          fi
+
+      - name: Report a merge conflict
+        if: steps.merge.outputs.conflicted == 'true'
+        shell: bash
+        run: |
+          set -euo pipefail
+          title="Upstream skill sync needs manual conflict resolution"
+          issue_number="$(gh issue list --state open --search "\"$title\" in:title" --json number --jq '.[0].number // empty')"
+          if [[ -z "$issue_number" ]]; then
+            gh issue create \
+              --title "$title" \
+              --body "The scheduled merge from mattpocock/skills into the personalized fork conflicted. Fetch upstream and resolve the merge locally before the next sync."
+          else
+            gh issue comment "$issue_number" --body "The latest scheduled upstream sync still conflicts and needs manual resolution."
+          fi
+          exit 1
