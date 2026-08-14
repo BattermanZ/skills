@@ -8,7 +8,6 @@ on:
 permissions:
   contents: write
   pull-requests: write
-  issues: write
 
 concurrency:
   group: sync-matt-pocock-upstream
@@ -73,13 +72,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          title="Upstream skill sync needs manual conflict resolution"
-          issue_number="$(gh issue list --state open --search "\"$title\" in:title" --json number --jq '.[0].number // empty')"
-          if [[ -z "$issue_number" ]]; then
-            gh issue create \
-              --title "$title" \
-              --body "The scheduled merge from mattpocock/skills into the personalized fork conflicted. Fetch upstream and resolve the merge locally before the next sync."
-          else
-            gh issue comment "$issue_number" --body "The latest scheduled upstream sync still conflicts and needs manual resolution."
-          fi
+          message="The scheduled merge from mattpocock/skills conflicted. Fetch upstream and resolve the merge locally."
+          echo "::error title=Upstream skill sync needs manual resolution::$message"
+          printf '## Upstream sync conflict\n\n%s\n' "$message" >> "$GITHUB_STEP_SUMMARY"
           exit 1
