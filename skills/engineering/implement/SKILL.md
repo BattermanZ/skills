@@ -1,10 +1,10 @@
 ---
 name: implement
-description: "Claim, implement, validate, and ship one issue or spec."
+description: "Claim, implement, validate, and ship one GitHub issue or spec."
 disable-model-invocation: true
 ---
 
-Implement exactly one issue or spec through to a pushed commit. For issue work, the issue is the completion ledger.
+Implement exactly one GitHub issue or spec through to a pushed commit. For issue work, the GitHub issue is the completion ledger.
 
 ## 1. Establish the guardrails
 
@@ -16,12 +16,12 @@ Inspect the worktree and branch before claiming the work. Require a clean worktr
 
 ## 2. Resolve and claim the work
 
-- **An issue was supplied:** fetch it and confirm its title and repository. If it already has any assignee, require the user's explicit green light for that assigned issue; invoking this skill alone is not that green light.
-- **No work was supplied:** use the configured issue-tracker workflow to list open issues carrying the `ready-for-agent` label. Exclude assigned issues and issues with open blockers, then choose the oldest eligible issue (lowest issue number). Stop if none is available.
-- **The chosen issue is unassigned:** assign it to the authenticated tracker user before editing code, then fetch it again and verify the assignment succeeded.
-- **A spec with no issue was supplied:** continue without tracker actions.
+- **An issue was supplied:** resolve its GitHub repository, fetch it with `gh`, and confirm its title and repository. If it already has any assignee, require the user's explicit green light for that assigned issue; invoking this skill alone is not that green light.
+- **No work was supplied:** resolve the current GitHub repository from its Git remote, then use `gh` to list open issues carrying the `ready-for-agent` label. Exclude assigned issues and issues with open blockers, then choose the oldest eligible issue (lowest issue number). Stop if none is available.
+- **The chosen issue is unassigned:** assign it to the authenticated GitHub user with `gh issue edit --add-assignee @me` before editing code, then fetch it again and verify the assignment succeeded.
+- **A spec with no GitHub issue was supplied:** continue without GitHub issue actions.
 
-The issue-tracker workflow lives at `docs/agents/issue-tracker.md`. If issue work needs it and it is absent, stop and ask the user to configure the tracker.
+GitHub issue work requires an authenticated `gh` session and an unambiguous GitHub repository. If either is unavailable, stop before claiming or changing anything. Do not substitute another issue tracker.
 
 ## 3. Implement and check
 
@@ -43,11 +43,11 @@ If live acceptance exposes a defect, fix it and return to automated checks and r
 
 ## 6. Complete and ship
 
-For issue work:
+For GitHub issue work:
 
 1. Check off each implementation or acceptance checkbox only when the live-pass evidence proves it complete.
 2. Fetch the issue again and verify every required checkbox is checked. Any unchecked required item blocks the release.
 
 Then inspect the final diff, commit only the intended work to the current branch, push that branch, and verify the remote contains the commit. Follow all repository-specific commit, push, deployment, and post-push validation gates in `AGENTS.md`.
 
-Close the issue only after validation, checkbox completion, commit, push, and any required post-push checks have all succeeded. Fetch it once more and verify it is closed. On any failure, leave the issue open and report the exact blocking gate.
+Close the GitHub issue with `gh issue close` only after validation, checkbox completion, commit, push, and any required post-push checks have all succeeded. Fetch it once more and verify it is closed. On any failure, leave the issue open and report the exact blocking gate.

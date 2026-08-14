@@ -23,7 +23,7 @@ The route most work travels. You have an idea and want it built.
    - **Yes** → **`/to-spec`** (turn the thread into a spec), then **`/to-tickets`** to split it into tracer-bullet tickets, each declaring its **blocking edges**. On a local tracker that's one file per ticket under `.scratch/<feature>/issues/`, worked blockers-first by hand; on a real tracker the edges become native blocking links, so any ticket whose blockers are done can be grabbed — kick off **`/implement`** per ticket, **`/clear`ing context between each one**. Each ticket is self-contained, so the last one's context is disposable.
    - **No** → **`/implement`** right here, in the same context window.
 
-   Either way, **`/implement`** claims one issue, drives **`/tdd`** internally — one red-green slice at a time — runs **`/code-review`** over the complete change, and fixes the findings. It then proves the reviewed code against the live test environment documented in `AGENTS.md`, completes the issue checklist, commits, pushes, and closes the issue. With no argument it takes the oldest unassigned, unblocked `ready-for-agent` issue. Reach for **`/tdd`** on its own when you just want to build a concrete behaviour test-first without a full spec, and **`/code-review`** on its own whenever you want to review a branch, PR, or working tree against a fixed point.
+   Either way, **`/implement`** claims one GitHub issue through `gh`, drives **`/tdd`** internally — one red-green slice at a time — runs **`/code-review`** over the complete change, and fixes the findings. It then proves the reviewed code against the live test environment documented in `AGENTS.md`, completes the GitHub issue checklist, commits, pushes, and closes the issue. With no argument it takes the oldest unassigned, unblocked `ready-for-agent` GitHub issue. Reach for **`/tdd`** on its own when you just want to build a concrete behaviour test-first without a full spec, and **`/code-review`** on its own whenever you want to review a branch, PR, or working tree against a fixed point.
 
 ### Context hygiene
 
@@ -87,4 +87,4 @@ Off the main flow entirely.
 
 ## Precondition
 
-**`/setup-matt-pocock-skills`** — run before your first engineering flow to configure the issue tracker, triage labels, and doc layout the other skills assume. Custom issue trackers also work.
+**`/setup-matt-pocock-skills`** — run before your first engineering flow to configure the issue tracker, triage labels, and doc layout the other skills assume. Custom issue trackers work for the generic flows; this fork's personalized `/implement` workflow uses GitHub through `gh`.

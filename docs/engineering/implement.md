@@ -1,6 +1,6 @@
 ## What it does
 
-`implement` takes one issue or a supplied [spec](https://www.aihero.dev/ai-coding-dictionary/spec) from claim to closure. It implements with [tdd](https://aihero.dev/skills-tdd) where possible, runs automated checks, reviews the complete change, proves the reviewed result against the app's live test environment, completes the issue checklist, commits, pushes, and closes the issue.
+`implement` takes one GitHub issue or a supplied [spec](https://www.aihero.dev/ai-coding-dictionary/spec) from claim to closure. It implements with [tdd](https://aihero.dev/skills-tdd) where possible, runs automated checks, reviews the complete change, proves the reviewed result against the app's live test environment, completes the GitHub issue checklist, commits, pushes, and closes the issue.
 
 The issue is the completion ledger. Assignment prevents two agents taking the same work, acceptance checkboxes are evidence-backed release gates, and the issue stays open until the validated commit is on the remote.
 
@@ -10,18 +10,18 @@ You invoke this by typing `/implement` — the agent won't reach for it on its o
 
 | The work is… | Reach for |
 | --- | --- |
-| A specific implementation issue | `/implement <issue URL or owner/repo#number>` |
-| The next available agent-ready issue | `/implement` with no argument |
-| A small, settled spec with no tracker issue | `/implement <spec path>` |
+| A specific GitHub implementation issue | `/implement <GitHub issue URL or owner/repo#number>` |
+| The next available GitHub agent-ready issue | `/implement` with no argument |
+| A small, settled spec with no GitHub issue | `/implement <spec path>` |
 | A large spec that needs slicing | [to-tickets](https://aihero.dev/skills-to-tickets) first |
 | One concrete behaviour you want test-first | [tdd](https://aihero.dev/skills-tdd) directly |
 | Already built work that only needs review | [code-review](https://aihero.dev/skills-code-review) directly |
 
-One run owns one work item. With no argument, the skill selects the oldest open, unassigned, unblocked issue carrying `ready-for-agent`.
+One run owns one work item. With no argument, the skill uses `gh` to select the oldest open, unassigned, unblocked GitHub issue carrying `ready-for-agent`.
 
 ## Prerequisites
 
-Issue work needs the tracker workflow written by [setup-matt-pocock-skills](https://aihero.dev/skills-setup-matt-pocock-skills) at `docs/agents/issue-tracker.md`.
+GitHub issue work needs an authenticated GitHub CLI (`gh`) and a Git remote that resolves unambiguously to the intended GitHub repository. The `ready-for-agent` label must exist for automatic selection; [setup-matt-pocock-skills](https://aihero.dev/skills-setup-matt-pocock-skills) can create it. This personalized workflow does not use GitLab, Linear, or a local issue tracker.
 
 The repository's applicable `AGENTS.md` files must document a usable live test environment and how to exercise the app through its public interface. That procedure is a hard gate: without it, implementation stops before code changes rather than substituting unit tests or production access for live acceptance.
 
@@ -33,7 +33,7 @@ The run starts from a clean worktree and records the starting commit as its revi
 
 Assignment is a lock on the work item:
 
-- An unassigned issue is claimed by assigning it to the authenticated tracker user before code changes.
+- An unassigned GitHub issue is claimed with `gh issue edit --add-assignee @me` before code changes.
 - An issue already assigned to anyone is left alone until the user gives explicit approval for that exact issue. Typing `/implement` by itself is not approval.
 - An invocation with no argument cannot select an assigned issue, because there is no explicit approval to override its lock.
 
@@ -51,7 +51,11 @@ Only evidence from that final pass can complete implementation or acceptance che
 
 **What happens if I invoke it without an issue number?**
 
-It scans the current repository for open `ready-for-agent` issues, removes anything assigned or blocked, and takes the oldest eligible issue by issue number. If none is available, it stops without changing anything.
+It scans the current GitHub repository for open `ready-for-agent` issues, removes anything assigned or blocked, and takes the oldest eligible issue by issue number. If none is available, it stops without changing anything.
+
+**Which issue tracker does it use?**
+
+GitHub only, through the authenticated `gh` CLI. It stops if the repository cannot be resolved to GitHub and never silently falls back to GitLab, Linear, or local files.
 
 **Will it take an issue that somebody else is already working on?**
 
