@@ -43,7 +43,7 @@ The claim is fetched again after assignment, so a failed or racing assignment st
 
 The leading idea is **live acceptance**: automated tests establish fast confidence while building, but the last pre-release check uses the running app as a user or API consumer would.
 
-[Code review](https://aihero.dev/skills-code-review) comes before live acceptance and includes committed, staged, unstaged, and untracked changes. Review fixes go back through the automated checks and another review; only then does the agent start or reach the test environment documented in `AGENTS.md`. A defect found there returns the work to checks and review, so the final live pass always covers the reviewed code.
+[Code review](https://aihero.dev/skills-code-review) comes before live acceptance and includes committed, staged, unstaged, and untracked changes. Review fixes go back through the affected automated checks before the agent starts or reaches the test environment documented in `AGENTS.md`. A defect found there returns the work to checks and review, so the final live pass always covers the reviewed code.
 
 Only evidence from that final pass can complete implementation or acceptance checkboxes. Every required box must be checked before the commit. The push must succeed—and any repository-required post-push checks must pass—before the issue closes.
 

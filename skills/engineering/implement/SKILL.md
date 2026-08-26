@@ -33,7 +33,7 @@ All automated checks must pass before review.
 
 Run `/code-review` against the complete change since the recorded starting `HEAD`, including committed, staged, unstaged, and untracked work. Supply the issue or spec explicitly so the Spec axis does not depend on commit messages.
 
-Resolve every actionable finding: fix it or record why it does not apply. Rerun affected focused checks and every repository-required validation, then rerun `/code-review` after any review-driven code change. No hard Standards finding or Spec finding may remain unresolved.
+Resolve every actionable finding: fix it or record why it does not apply. Rerun affected focused checks and every repository-required validation. No hard Standards finding or Spec finding may remain unresolved.
 
 ## 5. Run final live acceptance
 
