@@ -21,6 +21,8 @@ Inspect the worktree and branch before claiming the work. Require a clean worktr
 - **The chosen issue is unassigned:** assign it to the authenticated GitHub user with `gh issue edit --add-assignee @me` before editing code, then fetch it again and verify the assignment succeeded.
 - **A spec with no GitHub issue was supplied:** continue without GitHub issue actions.
 
+**Read the ledger whole** — the body and every comment (`gh issue view <number> --comments`). The brief specifying the work, and the decisions that reshaped it, are often comments, so an issue read from its body alone can miss the contract entirely.
+
 GitHub issue work requires an authenticated `gh` session and an unambiguous GitHub repository. If either is unavailable, stop before claiming or changing anything. Do not substitute another issue tracker.
 
 ## 3. Implement and check
@@ -45,8 +47,8 @@ If live acceptance exposes a defect, fix it and return to automated checks and r
 
 For GitHub issue work:
 
-1. Check off each implementation or acceptance checkbox only when the live-pass evidence proves it complete.
-2. Fetch the issue again and verify every required checkbox is checked. Any unchecked required item blocks the release.
+1. Check off each implementation or acceptance checkbox only when the live-pass evidence proves it complete. The checkboxes sit wherever the brief does, a comment as readily as the body; tick them in place there.
+2. Fetch the issue again, comments included, and verify every required checkbox is checked. Any unchecked required item blocks the release.
 
 Then inspect the final diff, commit only the intended work to the current branch, push that branch, and verify the remote contains the commit. Follow all repository-specific commit, push, deployment, and post-push validation gates in `AGENTS.md`.
 
