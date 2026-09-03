@@ -1,12 +1,12 @@
 ---
 name: hatchdoor
-description: Manage the user's Obsidian vault through the Hatchdoor MCP tools — discover Vaults, search, read, create, edit, organise, sync and manage attachments. Use for ANY Obsidian/vault/notes request.
+description: Manage the user's vault through the Hatchdoor MCP tools — discover Vaults, search, read, create, edit, organise, sync and manage attachments. Use for ANY vault/notes request.
 platforms: [linux, macos, windows]
 ---
 
-# Hatchdoor — Obsidian vault via MCP
+# Hatchdoor — the vault via MCP
 
-On this host the Obsidian vault is **remote** and reached **only** through the Hatchdoor MCP tools. There is **no local vault on disk** — never use file tools, shell, or filesystem paths for vault content. Always use the Hatchdoor MCP tools.
+On this host the vault is **remote** and reached **only** through the Hatchdoor MCP tools. There is **no local vault on disk** — never use file tools, shell, or filesystem paths for vault content. Always use the Hatchdoor MCP tools.
 
 ## Start with Vault discovery
 
@@ -17,7 +17,7 @@ On this host the Obsidian vault is **remote** and reached **only** through the H
 
 ## Before any note change
 
-1. Read the note **"Obsidian Vault — Operating Rules (BatterBrain)"** (`resolve_wikilink`/`search_notes`, then `get_note`) and follow it — it is the source of truth for filing, tags, links, and change reports.
+1. Read the note **"Vault — Operating Rules"** (`resolve_wikilink`/`search_notes`, then `get_note`) and follow it — it is the source of truth for filing, tags, links, and change reports.
 2. If tags may be added or changed, read **"Tags Reference"** first.
 3. Search before creating: `search_notes` (semantic by default; keyword mode for exact names/tags/paths). Prefer linking to or updating an existing note over creating a duplicate.
 4. Before a hash-protected mutation, call `get_note` to obtain its fresh `expected_content_hash`. This applies to `edit_note`, `replace_section`, `update_note`, `append_to_note`, move/rename/archive/delete operations. If the hash is rejected, reread before attempting another edit.
