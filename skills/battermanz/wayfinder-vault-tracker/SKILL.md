@@ -11,7 +11,7 @@ All reads and writes go through the Hatchdoor MCP tools, following the `hatchdoo
 
 ## Layout
 
-One folder per effort under the vault's `wayfinder/` root — the working area for in-flight efforts, deliberately outside both domain roots:
+One folder per effort under the vault's `wayfinder/` root — the working area for in-flight efforts, deliberately outside both domain roots. Start a new map or ticket from its template: `_system/templates/wayfinder-map` and `_system/templates/wayfinder-ticket`.
 
 - **Map**: `wayfinder/<effort>/<Effort> — Map` — the Destination / Notes / Decisions-so-far / Not-yet-specified / Out-of-scope body.
 - **Ticket**: `wayfinder/<effort>/issues/NN — <Question title>`, numbered from `01`. The number lives in the note title; refer to tickets by title, as wikilinks.
@@ -35,7 +35,8 @@ Same grammar as the local-markdown tracker, near the top of the ticket body:
 
 - **Frontier**: list `wayfinder/<effort>/issues/` (`get_tree` on that folder — but never trust `get_tree` during or just after a write burst; per-note results are authoritative); a ticket is on the frontier when open, unblocked, and unclaimed; first by number wins.
 - **Claim**: set `Status: claimed` in the ticket and write it before any work.
-- **Resolve**: append the answer under an `## Answer` heading (above `## Related`), set `Status: resolved`, then append a context pointer — one line, gist + wikilink — to the map's Decisions-so-far.
+- **Resolve**: append the answer under an `## Answer` heading (above `## Related`), set `Status: resolved`, then append a context pointer — one line, gist + wikilink — to the map's Decisions-so-far. When the evidential footing needs stating, open the answer with a typed callout: `> [!success] Verification status — sourced` or `> [!warning] Verification status — unverified`, with who ran it and what a consumer must re-check.
+- **HITL task checklists**: a HITL task ticket hands the human a precise checklist — write it as a GFM task list (`- [ ]` items), so the human can tick it off in the note.
 - **New tickets / fog / out-of-scope**: as the wayfinder skill directs; create ticket notes with the next free number, wire `Blocked by:` in a second pass.
 - **One ticket per session**, research tickets excepted — exactly as upstream wayfinder rules.
 
