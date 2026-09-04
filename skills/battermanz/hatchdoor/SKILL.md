@@ -19,8 +19,9 @@ On this host the vault is **remote** and reached **only** through the Hatchdoor 
 
 1. Read the note **"Vault — Operating Rules"** (`resolve_wikilink`/`search_notes`, then `get_note`) and follow it — it is the source of truth for filing, tags, links, and change reports.
 2. If tags may be added or changed, read **"Tags Reference"** first.
-3. Search before creating: `search_notes` (semantic by default; keyword mode for exact names/tags/paths). Prefer linking to or updating an existing note over creating a duplicate.
-4. Before a hash-protected mutation, call `get_note` to obtain its fresh `expected_content_hash`. This applies to `edit_note`, `replace_section`, `update_note`, `append_to_note`, move/rename/archive/delete operations. If the hash is rejected, reread before attempting another edit.
+3. Decide the note's **shape** before writing a word of it. Read **"Hatchdoor - Markdown Feature Showcase"** and pick the components that carry what the note has to say: a callout for a verdict or a caveat, a two-column table for repeated labelled facts, a task list for open items, dated sub-headings for anything that accumulates over time, a Mermaid diagram for a flow, a fenced block with its language for anything to be copied and run. Its **Choosing a shape** section maps the common cases. This applies to every note, not only ones you have already decided are rich: bullets top to bottom is a choice too, and usually the wrong one. Layout only — it never licenses adding content the user did not give (see **Minimal capture**).
+4. Search before creating: `search_notes` (semantic by default; keyword mode for exact names/tags/paths). Prefer linking to or updating an existing note over creating a duplicate.
+5. Before a hash-protected mutation, call `get_note` to obtain its fresh `expected_content_hash`. This applies to `edit_note`, `replace_section`, `update_note`, `append_to_note`, move/rename/archive/delete operations. If the hash is rejected, reread before attempting another edit.
 
 ## Tool map
 
@@ -51,6 +52,7 @@ On this host the vault is **remote** and reached **only** through the Hatchdoor 
 
 - **Minimal capture:** for a simple capture, checklist item, question, or list request, write only the information the user supplied. Do not add inferred sections such as `Outcome`, `Next action`, background context, extra tasks, research, or recommendations. Add structure only when explicitly requested or essential to the requested note type.
 - **British English** for all vault content.
+- **Unslop prose:** apply the `unslop` skill to any prose you write into the vault, with this vault's four documented exceptions — emoji stay (headings included), en dashes stay, note titles use ` - ` as the separator rather than an em dash, and voice/first person is only added in `personal/food`, `personal/travel`, `personal/parenting` and `personal/media`. Everywhere else strip the tells and add nothing.
 - **Tags:** frontmatter `tags: [...]`, exactly one `type/*`; consult Tags Reference before inventing a tag. Change them with `update_frontmatter`, which leaves the body alone.
 - **Linking:** only link to notes that already exist. Every new note gets a `## Related` section, and **`## Related` must always be the last section in the note.**
 - **No destructive or broad reorganisation without an explicit request:** do not move, rename, archive, delete, or make bulk/multi-note edits unless the user explicitly asks. Never touch `.obsidian/`.
