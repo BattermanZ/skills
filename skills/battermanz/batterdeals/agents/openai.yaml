@@ -1,0 +1,5 @@
+interface:
+  display_name: "batterdeals"
+  short_description: "Find and cart-test discount codes for a shop"
+policy:
+  allow_implicit_invocation: false
