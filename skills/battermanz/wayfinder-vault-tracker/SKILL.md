@@ -11,11 +11,11 @@ Routing is the **subject test**: an effort about coding/apps tracks inside its o
 
 - **Map**: `wayfinder/<effort>/<Effort> - Map`
 - **Ticket**: `wayfinder/<effort>/issues/NN - <short title>`, numbered from `01`
-- **Research file**: `wayfinder/<effort>/research/RNN - <title>`, NN matching its ticket
+- **Research file**: `wayfinder/<effort>/research/RNN - <title>`, NN matching its ticket. **`R00` is charting-time research**, gathered before any ticket existed and matching none — every effort so far has needed one.
 
 Note titles take ` - ` as the separator, never an em dash, per the `hatchdoor` skill. It is a documented exception to this vault's prose rules and it applies to every note of an effort.
 
-Start a map or ticket from its template — `_system/templates/wayfinder-map` and `_system/templates/wayfinder-ticket` in the vault. The templates are the authoritative note shapes: frontmatter and tags, the map's sections, the ticket's `Type:` / `Status:` / `Blocked by:` lines. Refer to tickets by name, as wikilinks.
+Start a map, ticket or research note from its template — `_system/templates/wayfinder-map`, `wayfinder-ticket` and `wayfinder-research` in the vault. The templates are the authoritative note shapes: frontmatter and tags, the map's sections, the ticket's `Type:` / `Status:` / `Blocked by:` lines. Refer to tickets by name, as wikilinks.
 
 ## Operations
 
@@ -28,7 +28,7 @@ Start a map or ticket from its template — `_system/templates/wayfinder-map` an
 - **Closed ≠ resolved**: a ticket ruled out of scope takes `Status: closed` with a `> [!warning]` callout saying why, leaves the board, and is recorded in the map's **Out of scope**, never in Decisions so far.
 - **Blocking edges are mirrored on both tickets, and every one is a link.** A `Blocks:` entry on one side needs the matching `Blocked by:` on the other, or the board and the graph go wrong in opposite directions. Write each as an aliased wikilink so a blocker is one click away, never a bare number: `~~[[02 - Full ticket title|02]]~~` when resolved, `**[[12 - Full ticket title|12]]**` when live. Inside a table cell the alias pipe must be escaped — `[[Full title\|NN]]` — or it splits the cell; Hatchdoor resolves the link correctly either way. Reframings that arrive as an upstream ticket resolves go under the question's `### Reframings` heading, dated and newest first, rather than rewriting the question in place.
 - **New tickets, fog, out of scope**: as the wayfinder skill directs — next free number, `Blocked by:` wired in a second pass, a row added to the map's Open tickets board.
-- **Research agents** write findings to their `research/RNN - …` note and resolve their own ticket; the charting session indexes answers on the map.
+- **Research agents** write findings to their `research/RNN - …` note and resolve their own ticket; the charting session indexes answers on the map. A research note is a document, not tracker state: fixed frame (provenance line, verification callout, short version, what still needs confirming, sources), free middle. Number its sections only when the ticket's question was numbered, and treat a published section number as a permanent address — other notes cite `research/NN §3`, so append on revision, never renumber.
 - **One ticket per session**, research excepted.
 
 ## The destination outcome
