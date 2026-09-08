@@ -9,20 +9,24 @@ Routing is the **subject test**: an effort about coding/apps tracks inside its o
 
 ## Layout
 
-- **Map**: `wayfinder/<effort>/<Effort> — Map`
-- **Ticket**: `wayfinder/<effort>/issues/NN — <short title>`, numbered from `01`
-- **Research file**: `wayfinder/<effort>/research/RNN — <title>`, NN matching its ticket
+- **Map**: `wayfinder/<effort>/<Effort> - Map`
+- **Ticket**: `wayfinder/<effort>/issues/NN - <short title>`, numbered from `01`
+- **Research file**: `wayfinder/<effort>/research/RNN - <title>`, NN matching its ticket
+
+Note titles take ` - ` as the separator, never an em dash, per the `hatchdoor` skill. It is a documented exception to this vault's prose rules and it applies to every note of an effort.
 
 Start a map or ticket from its template — `_system/templates/wayfinder-map` and `_system/templates/wayfinder-ticket` in the vault. The templates are the authoritative note shapes: frontmatter and tags, the map's sections, the ticket's `Type:` / `Status:` / `Blocked by:` lines. Refer to tickets by name, as wikilinks.
 
 ## Operations
 
 - **Frontier**: a ticket is on the frontier when open, unblocked (every `Blocked by:` ticket resolved), and unclaimed; first by number wins. List `wayfinder/<effort>/issues/` to scan — and during or just after a write burst, per-note reads are authoritative, `get_tree` is not (Hatchdoor #226).
-- **Claim**: set `Status: claimed` and write it before any work.
-- **Resolve**: append the answer under `## Answer` (above `## Related`), set `Status: resolved`, then append one line — gist + wikilink — to the map's Decisions so far. When the evidential footing needs stating, open the answer with `> [!success] Verification status — sourced` or `> [!warning] Verification status — unverified`: who ran it, and what a consumer must re-check.
+- **Claim**: set `Status: claimed` and write it before any work, on the ticket and in the map's Open tickets row.
+- **Resolve**: append the answer under `## Answer` (above `## Related`), set `Status: resolved`, then move the ticket's row off the map's Open tickets board into Decisions so far — one line, gist + wikilink — in the same write burst. When the evidential footing needs stating, open the answer with `> [!success] Verification status — sourced` or `> [!warning] Verification status — unverified`: who ran it, and what a consumer must re-check.
+- **The map's tables hold one line per row.** A correction that needs paragraphs lands in the ticket it corrects; the map's Corrections column carries only `✓ re-checked by [[…]]` or `✗ superseded by [[…]]`.
+- **Ticket graph**: the map's optional Mermaid flowchart, drawn once blocking chains run deeper than one ticket. It spans every ticket, resolved ones included, and encodes state as shape so it survives both themes: rounded resolved, square open-but-blocked, hexagon on the frontier. Redraw the affected nodes in the same burst that claims a ticket, resolves one, or wires a `Blocked by:` line.
 - **HITL task checklists**: a HITL task hands the human a precise checklist — a GFM task list (`- [ ]`), tickable in the note.
-- **New tickets, fog, out of scope**: as the wayfinder skill directs — next free number, `Blocked by:` wired in a second pass.
-- **Research agents** write findings to their `research/RNN — …` note and resolve their own ticket; the charting session indexes answers on the map.
+- **New tickets, fog, out of scope**: as the wayfinder skill directs — next free number, `Blocked by:` wired in a second pass, a row added to the map's Open tickets board.
+- **Research agents** write findings to their `research/RNN - …` note and resolve their own ticket; the charting session indexes answers on the map.
 - **One ticket per session**, research excepted.
 
 ## The destination outcome
@@ -30,7 +34,7 @@ Start a map or ticket from its template — `_system/templates/wayfinder-map` an
 Ticket resolutions are **waypoints**: while the effort is live, a decision's only home is its ticket. Only when the map fully resolves — nothing left to decide — is the decision reached. Then:
 
 1. Write the **destination outcome** (the spec or decision the effort was finding its way to) as a note in its domain home, routed like any other note, linking back into the map and key tickets.
-2. Set the map to `status/done` and link the outcome from it.
+2. Set the map to `status/done`, link the outcome from its `Reached` callout, and update the effort's Status in [[Wayfinder]] — that row mirrors the map's tag and goes stale otherwise.
 3. The effort folder stays in place under `wayfinder/` — the resolved tickets and research are its evidence trail.
 
 ## Commit summaries
