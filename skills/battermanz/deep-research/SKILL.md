@@ -46,12 +46,14 @@ One folder per effort, under the topic the filing router picks. The effort name 
 
 ```
 personal/<topic>/<Effort>/
-  <Effort> - Brief          type/research
-  <Effort> - Evidence       type/reference
-  <Effort> - Practical      type/reference   (only if wanted)
+  <Effort> - Brief          type/research    research-brief
+  <Effort> - Evidence       type/reference   research-evidence
+  <Effort> - Practical      type/reference   research-practical   (only if wanted)
   research/
-    <Cluster>.md            type/research
+    <Cluster>.md            type/research    research-cluster
 ```
+
+The last column is the note's starting template, under `_system/templates/`. Each one carries the shape and the reason for it; follow them rather than reinventing a layout per effort.
 
 This is deeper than the vault's usual two levels, and deliberate: an effort is a set of notes that only make sense together. If the topic folder itself does not exist yet, ask before creating it.
 

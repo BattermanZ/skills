@@ -41,7 +41,7 @@ Your siblings are covering <list the other clusters>. Leave their ground to them
 
 Load the `hatchdoor` skill first: it owns the tool map, frontmatter, tags, note shape, British English and this vault's unslop exceptions. Vault: `<vault_id>`. Your note, and only your note: `<personal/topic/Effort/research/Cluster>`.
 
-1. **First act, before any reading:** `create_note` with frontmatter carrying `type/research`, the effort's own subject tags, and `created`, then the H1, then this status block, then your numbered questions as a list:
+1. **First act, before any reading:** `create_note`, starting from the `_system/templates/research-cluster` shape, with frontmatter carrying `type/research`, the effort's own subject tags, and `created`, then the H1, then this status block, then your numbered questions as a list:
 
    ```
    > [!warning] Status - in progress
