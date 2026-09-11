@@ -27,14 +27,17 @@ Your siblings are covering <list the other clusters>. Leave their ground to them
 
 - Authoritative here: <the source tiers agreed in the plan>. Corroborating only: <...>. Excluded: <...>.
 - Every claim carries a link to whoever owns it. A claim you cannot link, you do not make.
+- **Date every guideline, and confirm nothing newer exists.** A guideline claim carries the issuing body, the edition and the publication date. Before you rely on one, check the issuing body's own publications page rather than a search snippet. Guidance is revised on its own cycle, the superseded edition stays online, and it still reads authoritative. If you cannot establish that your copy is the current one, say so at the point you use it.
 - A source you could not find, or could not reach, is a gap. Write it down as one. Never round a failed lookup down to "there is nothing".
 - Report null results. "Three guidelines were checked and none addresses this" is a finding worth the same as a positive one.
 - Where two authoritative sources disagree, say so plainly and give both, with dates. Do not pick a winner and hide the loser.
 
 **Tools.**
 
-- `donsetch` first, `tavily` and `firecrawl` as fallbacks.
-- Put a deadline on every fetch (`deadline_ms: 45000`).
+- **Search over Bash, not MCP:** `donsetch search '<query>' --max-results 7 --deadline-ms 45000`. The MCP tool hands back bare URLs with no titles and no snippets, and it cannot show you the health line, which lives on stderr. Read that line: `degraded: yahoo blocked, mojeek blocked` means the search ran on a fraction of its engines, so a thin result set is the tool failing rather than the field being empty. Say so in your note instead of writing the null up as a finding.
+- **Fetch** works either way: `mcp__donsetch__web_fetch`, or `donsetch fetch <url> --focus '<what you are after>' --max-chars 8000` over Bash. If a fetch comes back as metadata with no page in it, the client is dropping the body: tell the coordinator and use the CLI.
+- `tavily` and `firecrawl` are the fallbacks. They are metered, so reach for them when donsetch has actually failed, not by default.
+- Put a deadline on every fetch (`--deadline-ms 45000` on the CLI, `deadline_ms: 45000` on a fallback tool).
 - A fetch that returns success with an empty body is a **failure**, not a source with nothing to say. Retry it on another tier. This is how a browser-tier fault produces a confident, thin section that reads fine and cites a page nobody read.
 
 **Write into the vault as you go.**
