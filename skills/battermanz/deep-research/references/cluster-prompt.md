@@ -1,6 +1,6 @@
 # The cluster prompt
 
-One research agent, one cluster, one vault note. Fill every angle bracket before spawning. The blocks below are load-bearing: the sourcing rules, the empty-body rule and the write-as-you-go rules each exist because their absence cost a real run.
+One research agent, one cluster, one vault note. Fill every angle bracket before spawning. The blocks below are load-bearing: the sourcing rules, the reading-depth rules, the empty-body rule and the write-as-you-go rules each exist because their absence cost a real run.
 
 Give the agent the vault id and the exact note path, so the choice of where to write is never its own.
 
@@ -27,6 +27,9 @@ Your siblings are covering <list the other clusters>. Leave their ground to them
 
 - Authoritative here: <the source tiers agreed in the plan>. Corroborating only: <...>. Excluded: <...>.
 - Every claim carries a link to whoever owns it. A claim you cannot link, you do not make.
+- **Say how deeply you read each source, where you use it:** `[full text]`, `[abstract only]`, or `[partial: what was missing]`. An abstract is reliable for a number's value and unreliable for what that number means. Of six papers later checked against their own abstracts, three misreported themselves: a value relabelled as an increase, a milestone moved by a month, a summary box contradicting its own results table. The summary is the version that circulates, so a contested claim resting on one is the weakest thing in your note.
+- **Where a full text exists, open it**, even when the abstract already answers the question. One cluster cited fifteen sources it had not read, and two were sitting free and open on PMC, unopened because the abstract had answered.
+- **A truncated fetch is a partial read.** Say where it cut off, and claim nothing about the part you did not see. A guideline fetched to a character limit lost its reference list from number 21 onward, and a criticism of its evidence grading got built on the missing part.
 - **Date every guideline, and confirm nothing newer exists.** A guideline claim carries the issuing body, the edition and the publication date. Before you rely on one, check the issuing body's own publications page rather than a search snippet. Guidance is revised on its own cycle, the superseded edition stays online, and it still reads authoritative. If you cannot establish that your copy is the current one, say so at the point you use it.
 - A source you could not find, or could not reach, is a gap. Write it down as one. Never round a failed lookup down to "there is nothing".
 - Report null results. "Three guidelines were checked and none addresses this" is a finding worth the same as a positive one.
@@ -36,7 +39,14 @@ Your siblings are covering <list the other clusters>. Leave their ground to them
 
 - **Search over Bash, not MCP:** `donsetch search '<query>' --max-results 7 --deadline-ms 45000`. The MCP tool hands back bare URLs with no titles and no snippets, and it cannot show you the health line, which lives on stderr. Read that line: `degraded: yahoo blocked, mojeek blocked` means the search ran on a fraction of its engines, so a thin result set is the tool failing rather than the field being empty. Say so in your note instead of writing the null up as a finding.
 - **Fetch** works either way: `mcp__donsetch__web_fetch`, or `donsetch fetch <url> --focus '<what you are after>' --max-chars 8000` over Bash. If a fetch comes back as metadata with no page in it, the client is dropping the body: tell the coordinator and use the CLI.
-- `tavily` and `firecrawl` are the fallbacks. They are metered, so reach for them when donsetch has actually failed, not by default.
+- **Triage a paper before you chase it.** One call says whether a free full text exists:
+
+  ```
+  curl -s "https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=EXT_ID:<PMID>&resultType=core&format=json"
+  ```
+
+  It returns open-access status, DOI, PMCID and full-text URLs together. Then `https://www.ebi.ac.uk/europepmc/webservices/rest/<PMCID>/fullTextXML` gives the full text **with tables intact**, which is what HTML extraction eats: one cluster lost a paper's Table 1 that way and had to file it as a gap. `api.openalex.org/works/doi:<doi>` gives `best_oa_location` with no auth, and Semantic Scholar is a free second opinion. Record only a status you observed. `not triaged` is an honest cell and a filled-in guess is not: two indexes agreed a Nature paper was open access, the page held an abstract and a reference list and nothing else, so independent agreement is not verification.
+- `tavily` and `firecrawl` are the fallbacks, article fetching included. They are metered, so reach for them once donsetch has actually failed on a given URL, and then reach without asking, because a source your answer needs is worth a call. `firecrawl_scrape` with `parsers: ["pdf"]` reads PDF files that donsetch reports as empty, which is the one place the metering earns itself.
 - **Save what you fetch.** Write each authoritative document whole to a file in the session scratchpad and grep that, rather than fetching the same page again. Record the citation in your note as you go: issuing body, edition, publication date, URL, and the date you retrieved it. The file is scratch and goes away when the effort is verified; the citation is what has to survive.
 - Put a deadline on every fetch (`--deadline-ms 45000` on the CLI, `deadline_ms: 45000` on a fallback tool).
 - A fetch that returns success with an empty body is a **failure**, not a source with nothing to say. Retry it on another tier. This is how a browser-tier fault produces a confident, thin section that reads fine and cites a page nobody read.
@@ -63,7 +73,18 @@ Load the `hatchdoor` skill first: it owns the tool map, frontmatter, tags, note 
    > Finished <date>. <N> of <N> questions answered.
    ```
 
-   naming any question you could not answer and why, then append `## Headline findings` (up to ten bullets, so the note reads on its own), `## Sources` and `## Related`.
+   naming any question you could not answer and why, then append `## Headline findings` (up to ten bullets, so the note reads on its own), `## Could not fetch`, `## Sources` and `## Related`.
+
+**`## Could not fetch`** carries one row per source you used without reading it in full. "None. Every source cited was read in full" is a valid answer and a good one. Five columns: the source, its PMID or DOI, its status, the triage result you actually observed, and the claim it carries together with whether anyone disputes that claim. Status is one of four:
+
+| Status | Means |
+|---|---|
+| `abstract only` | you read the abstract, used it, never saw the paper |
+| `nothing obtained` | not even the abstract |
+| `partial` | the paper was read but something inside it was lost, a table eaten by extraction or a reference list cut off |
+| `full text existed, not opened` | the honest one |
+
+The last column is what the coordinator ranks purchases from, so a disputed claim resting on an abstract is the row that matters most. Choosing between the four statuses is itself the point, because it forces you to decide which one you actually did.
 
 **Constraints.**
 
